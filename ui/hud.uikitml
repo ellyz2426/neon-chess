@@ -1,7 +1,17 @@
-<panel width="240" height="100" backgroundColor="#000a1488" borderRadius="6" borderColor="#00e5ff44" borderWidth="1" flexDirection="column" alignItems="center" padding="6">
+<panel width="260" height="120" backgroundColor="#000a1488" borderRadius="6" borderColor="#00e5ff44" borderWidth="1" flexDirection="column" alignItems="center" padding="6">
   <text name="hud-turn" fontSize="12" fontWeight="bold" color="#00e5ff" marginBottom="2">WHITE to move</text>
   <text name="hud-mode" fontSize="9" color="#4dd0e1" marginBottom="2">VS AI - Medium</text>
-  <text name="hud-time" fontSize="10" color="#80deea" marginBottom="2">--:--</text>
+  <panel flexDirection="row" alignItems="center" justifyContent="center" marginBottom="2" gap="12">
+    <panel flexDirection="column" alignItems="center">
+      <text name="hud-wlabel" fontSize="8" color="#80deea">WHITE</text>
+      <text name="hud-wtime" fontSize="11" fontWeight="bold" color="#00e5ff">05:00</text>
+    </panel>
+    <text fontSize="10" color="#4dd0e1">|</text>
+    <panel flexDirection="column" alignItems="center">
+      <text name="hud-blabel" fontSize="8" color="#ff8a65">BLACK</text>
+      <text name="hud-btime" fontSize="11" fontWeight="bold" color="#ff6e40">05:00</text>
+    </panel>
+  </panel>
   <text name="hud-moves" fontSize="9" color="#80deea" marginBottom="1">Moves: 0</text>
   <text name="hud-status" fontSize="10" fontWeight="bold" color="#ffa726"></text>
 </panel>

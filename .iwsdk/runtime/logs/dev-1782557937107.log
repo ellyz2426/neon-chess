@@ -1,0 +1,26 @@
+
+> neon-chess@1.0.0 dev:runtime
+> vite
+
+🚀 Generating initial UIKitML files for dev server...
+👁️  UIKitML file watcher started - monitoring for changes...
+
+  VITE v7.3.6  ready in 1385 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://198.19.0.2:5173/
+📝 UIKitML file change: ui/pause.uikitml
+📝 UIKitML file change: ui/hud.uikitml
+✅ UIKitML file recompiled: hud.uikitml
+11:00:07 AM [vite] (client) page reload src/index.ts
+11:00:15 AM [vite] (client) page reload src/index.ts
+11:00:25 AM [vite] (client) page reload src/index.ts
+11:00:35 AM [vite] (client) page reload src/index.ts
+11:01:06 AM [vite] (client) page reload src/index.ts
+11:01:16 AM [vite] (client) page reload src/index.ts
+11:01:32 AM [vite] (client) page reload src/index.ts
+11:01:46 AM [vite] (client) page reload src/index.ts
+11:02:08 AM [vite] (client) page reload src/index.ts
+11:02:18 AM [vite] (client) page reload src/index.ts
+11:02:26 AM [vite] (client) page reload src/index.ts
+11:02:36 AM [vite] (client) page reload src/index.ts

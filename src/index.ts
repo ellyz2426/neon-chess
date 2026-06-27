@@ -223,6 +223,41 @@ function moveNotation(m:Move,g:GameState):string{
 	return s;
 }
 
+// --- OPENING BOOK ----------------------------------------------------
+// Common opening lines (from white's perspective, moves as [fr,fc,tr,tc])
+const OPENING_BOOK:{moves:number[][],name:string}[]=[
+	{name:'Italian',moves:[[6,4,4,4],[1,4,3,4],[7,6,5,5],[0,1,2,2],[7,5,4,2],[0,5,3,2]]},
+	{name:'Sicilian',moves:[[6,4,4,4],[1,2,3,2],[6,3,4,3]]},
+	{name:'French',moves:[[6,4,4,4],[1,4,3,4],[6,3,4,3],[1,3,3,3]]},
+	{name:'Queens Gambit',moves:[[6,3,4,3],[1,3,3,3],[6,2,4,2]]},
+	{name:'Kings Indian',moves:[[6,3,4,3],[1,6,2,5],[6,2,4,2]]},
+	{name:'Ruy Lopez',moves:[[6,4,4,4],[1,4,3,4],[7,6,5,5],[0,1,2,2],[7,5,2,1]]},
+	{name:'English',moves:[[6,2,4,2],[1,4,3,4]]},
+	{name:'Caro-Kann',moves:[[6,4,4,4],[1,2,3,2],[6,3,4,3],[1,3,3,3]]},
+	{name:'Scotch',moves:[[6,4,4,4],[1,4,3,4],[7,6,5,5],[0,1,2,2],[6,3,4,3]]},
+	{name:'Pirc',moves:[[6,4,4,4],[1,3,2,3],[6,3,4,3],[1,6,2,5]]},
+	{name:'London',moves:[[6,3,4,3],[1,3,3,3],[7,2,4,5]]},
+	{name:'Vienna',moves:[[6,4,4,4],[1,4,3,4],[7,1,5,2]]},
+];
+function getBookMove(g:GameState):Move|null{
+	const moveCount=g.history.length;
+	if(moveCount>6)return null;// book only for first few moves
+	const legal=getLegalMoves(g);
+	// find openings that match the current position
+	const matching=OPENING_BOOK.filter(book=>{
+		if(book.moves.length<=moveCount)return false;
+		for(let i=0;i<moveCount;i++){
+			const bm=book.moves[i];const hm=g.history[i];
+			if(bm[0]!==hm.fr||bm[1]!==hm.fc||bm[2]!==hm.tr||bm[3]!==hm.tc)return false;
+		}
+		return true;
+	});
+	if(matching.length===0)return null;
+	const chosen=matching[Math.floor(Math.random()*matching.length)];
+	const bm=chosen.moves[moveCount];
+	return legal.find(m=>m.fr===bm[0]&&m.fc===bm[1]&&m.tr===bm[2]&&m.tc===bm[3])||null;
+}
+
 // --- AI ENGINE --------------------------------------------------------
 const PIECE_VALUES=[0,100,320,330,500,900,20000,100,320,330,500,900,20000];
 // piece-square tables (from white's perspective, row 0=rank 8)
@@ -273,6 +308,9 @@ function minimax(g:GameState,depth:number,alpha:number,beta:number,maximizing:bo
 }
 function getAIMove(g:GameState,depth:number):Move|null{
 	if(depth===0){const moves=getLegalMoves(g);return moves.length>0?moves[Math.floor(Math.random()*moves.length)]:null;}
+	// check opening book first
+	const bookMove=getBookMove(g);
+	if(bookMove&&depth>=2)return bookMove;
 	const maximizing=g.turn==='w';
 	const[,m]=minimax(g,depth,-Infinity,Infinity,maximizing);
 	return m;
@@ -339,12 +377,17 @@ let selectedCell:[number,number]|null=null;
 let legalMovesForSelected:Move[]=[];
 let pendingPromotion:Move|null=null;
 let gameTimer=0;let timerLimit=0;let timerRunning=false;
-let whiteTime=0;let blackTime=0;
+let whiteTime=0;let blackTime=0;let whiteTimeLeft=300;let blackTimeLeft=300;
 let checksThisGame=0;let captureStreak=0;let queenSacrificed=false;
 let countdownTimer=0;let countdownValue=3;
 let toastTimer=0;let toastText='';
 let animatingMove:Move|null=null;let animProgress=0;
 let aiThinking=false;
+
+// Smooth animation state
+interface PieceAnim {mesh:Group;startPos:Vector3;endPos:Vector3;progress:number;duration:number;onComplete?:()=>void;}
+let activeAnimations:PieceAnim[]=[];
+const ANIM_DURATION=0.18;
 
 // 3D objects
 let boardGroup:Group;
@@ -426,11 +469,23 @@ function buildBoard(scene:any,theme:Theme){
 	for(const[w,h,x,z]of[[bSize,0.01,0,BOARD_OFFSET_Z-CELL_SIZE/2-0.01],[bSize,0.01,0,BOARD_OFFSET_Z+CELL_SIZE*7.5+0.01],[0.01,bSize,BOARD_OFFSET_X-CELL_SIZE/2-0.01,0],[0.01,bSize,BOARD_OFFSET_X+CELL_SIZE*7.5+0.01,0]]){
 		const bm=new Mesh(new BoxGeometry(w as number,0.025,h as number),borderMat);bm.position.set(x as number,0,z as number);boardGroup.add(bm);
 	}
-	// coordinate labels (small dots along edges)
-	const dotMat=new MeshBasicMaterial({color:new Color(theme.accent),transparent:true,opacity:0.3});
+	// coordinate labels - file letters and rank numbers
+	const labelMat=new MeshBasicMaterial({color:new Color(theme.accent),transparent:true,opacity:0.5});
 	for(let i=0;i<8;i++){
-		const d1=new Mesh(new SphereGeometry(0.008,4,4),dotMat);d1.position.set(BOARD_OFFSET_X+i*CELL_SIZE,0.02,BOARD_OFFSET_Z-CELL_SIZE/2-0.04);boardGroup.add(d1);
-		const d2=new Mesh(new SphereGeometry(0.008,4,4),dotMat);d2.position.set(BOARD_OFFSET_X-CELL_SIZE/2-0.04,0.02,BOARD_OFFSET_Z+i*CELL_SIZE);boardGroup.add(d2);
+		// file dots (bottom edge, a-h)
+		const d1=new Mesh(new SphereGeometry(0.008,4,4),labelMat.clone());d1.position.set(BOARD_OFFSET_X+i*CELL_SIZE,0.02,BOARD_OFFSET_Z-CELL_SIZE/2-0.04);boardGroup.add(d1);
+		// rank dots (left edge, 1-8)
+		const d2=new Mesh(new SphereGeometry(0.008,4,4),labelMat.clone());d2.position.set(BOARD_OFFSET_X-CELL_SIZE/2-0.04,0.02,BOARD_OFFSET_Z+i*CELL_SIZE);boardGroup.add(d2);
+		// file letter markers (small cubes below board) 
+		const fileDot=new Mesh(new BoxGeometry(0.015,0.004,0.015),new MeshBasicMaterial({color:new Color(theme.accent),transparent:true,opacity:0.4}));
+		fileDot.position.set(BOARD_OFFSET_X+i*CELL_SIZE,0.01,BOARD_OFFSET_Z+8*CELL_SIZE+0.02);boardGroup.add(fileDot);
+		// rank markers (small cubes left of board)
+		const rankDot=new Mesh(new BoxGeometry(0.015,0.004,0.015),new MeshBasicMaterial({color:new Color(theme.accent),transparent:true,opacity:0.4}));
+		rankDot.position.set(BOARD_OFFSET_X-CELL_SIZE+0.02,0.01,BOARD_OFFSET_Z+i*CELL_SIZE);boardGroup.add(rankDot);
+		// additional rank/file indicator dots at corners (progressively larger)
+		const cornerSize=0.005+i*0.001;
+		const cDot=new Mesh(new SphereGeometry(cornerSize,4,4),labelMat.clone());
+		cDot.position.set(BOARD_OFFSET_X+i*CELL_SIZE,0.01,BOARD_OFFSET_Z-CELL_SIZE/2-0.07);boardGroup.add(cDot);
 	}
 	// check highlight
 	if(checkHighlight)boardGroup.remove(checkHighlight);
@@ -529,8 +584,18 @@ function updateCapturedDisplay(theme:Theme){
 
 function showMoveIndicators(){
 	moveIndicators.forEach(m=>m.visible=false);
+	const theme=THEMES[stats.themeIdx];
 	legalMovesForSelected.forEach((m,i)=>{if(i>=moveIndicators.length)return;
 		const ind=moveIndicators[i];ind.position.set(BOARD_OFFSET_X+m.tc*CELL_SIZE,0.025,BOARD_OFFSET_Z+m.tr*CELL_SIZE);
+		// captures get larger, brighter indicator
+		const mat=ind.material as MeshBasicMaterial;
+		if(m.captured!==E||m.enPassant){
+			mat.color.set('#ff5252');mat.opacity=0.7;
+			ind.scale.setScalar(1.2);
+		}else{
+			mat.color.set(theme.move);mat.opacity=0.5;
+			ind.scale.setScalar(0.7);
+		}
 		ind.visible=true;
 	});
 }
@@ -567,9 +632,11 @@ function newGame(){
 	gameState.posHistory.push(boardKey(gameState));
 	selectedCell=null;legalMovesForSelected=[];pendingPromotion=null;
 	gameTimer=0;timerRunning=false;checksThisGame=0;captureStreak=0;queenSacrificed=false;
-	whiteTime=0;blackTime=0;aiThinking=false;
+	aiThinking=false;activeAnimations=[];
 	capturedWhiteList=[];capturedBlackList=[];
-	if(gameMode==='timed'){timerLimit=300;}else if(gameMode==='blitz'){timerLimit=120;}else{timerLimit=0;}
+	if(gameMode==='timed'){timerLimit=300;whiteTimeLeft=300;blackTimeLeft=300;}
+	else if(gameMode==='blitz'){timerLimit=120;whiteTimeLeft=120;blackTimeLeft=120;}
+	else{timerLimit=0;whiteTimeLeft=0;blackTimeLeft=0;}
 }
 
 function executeMove(m:Move){
@@ -596,23 +663,34 @@ function executeMove(m:Move){
 		playCastle();stats.castles++;
 		const cr=m.fr;
 		if(m.castle==='K'||m.castle==='k'){
-			const rookMesh=pieceMeshes[cr][7];if(rookMesh){rookMesh.position.set(BOARD_OFFSET_X+5*CELL_SIZE,0.01,BOARD_OFFSET_Z+cr*CELL_SIZE);pieceMeshes[cr][5]=rookMesh;pieceMeshes[cr][7]=null;}
+			const rookMesh=pieceMeshes[cr][7];if(rookMesh){
+				const rookEnd=new Vector3(BOARD_OFFSET_X+5*CELL_SIZE,0.01,BOARD_OFFSET_Z+cr*CELL_SIZE);
+				activeAnimations.push({mesh:rookMesh,startPos:rookMesh.position.clone(),endPos:rookEnd,progress:0,duration:ANIM_DURATION});
+				pieceMeshes[cr][5]=rookMesh;pieceMeshes[cr][7]=null;
+			}
 		}else{
-			const rookMesh=pieceMeshes[cr][0];if(rookMesh){rookMesh.position.set(BOARD_OFFSET_X+3*CELL_SIZE,0.01,BOARD_OFFSET_Z+cr*CELL_SIZE);pieceMeshes[cr][3]=rookMesh;pieceMeshes[cr][0]=null;}
+			const rookMesh=pieceMeshes[cr][0];if(rookMesh){
+				const rookEnd=new Vector3(BOARD_OFFSET_X+3*CELL_SIZE,0.01,BOARD_OFFSET_Z+cr*CELL_SIZE);
+				activeAnimations.push({mesh:rookMesh,startPos:rookMesh.position.clone(),endPos:rookEnd,progress:0,duration:ANIM_DURATION});
+				pieceMeshes[cr][3]=rookMesh;pieceMeshes[cr][0]=null;
+			}
 		}
 	}
-	// move piece mesh
+	// move piece mesh with smooth animation
 	const pMesh=pieceMeshes[m.fr][m.fc];
 	if(pMesh){
-		pMesh.position.set(BOARD_OFFSET_X+m.tc*CELL_SIZE,0.01,BOARD_OFFSET_Z+m.tr*CELL_SIZE);
+		const endPos=new Vector3(BOARD_OFFSET_X+m.tc*CELL_SIZE,0.01,BOARD_OFFSET_Z+m.tr*CELL_SIZE);
+		activeAnimations.push({mesh:pMesh,startPos:pMesh.position.clone(),endPos,progress:0,duration:ANIM_DURATION});
 		pieceMeshes[m.tr][m.tc]=pMesh;pieceMeshes[m.fr][m.fc]=null;
 	}
 	if(m.promotion){
-		// replace mesh
-		if(pieceMeshes[m.tr][m.tc])boardGroup.remove(pieceMeshes[m.tr][m.tc]!);
-		const newMesh=createPieceMesh(m.promotion,isWhite(m.piece),theme);
-		newMesh.position.set(BOARD_OFFSET_X+m.tc*CELL_SIZE,0.01,BOARD_OFFSET_Z+m.tr*CELL_SIZE);
-		boardGroup.add(newMesh);pieceMeshes[m.tr][m.tc]=newMesh;
+		// replace mesh after animation completes
+		setTimeout(()=>{
+			if(pieceMeshes[m.tr][m.tc])boardGroup.remove(pieceMeshes[m.tr][m.tc]!);
+			const newMesh=createPieceMesh(m.promotion,isWhite(m.piece),theme);
+			newMesh.position.set(BOARD_OFFSET_X+m.tc*CELL_SIZE,0.01,BOARD_OFFSET_Z+m.tr*CELL_SIZE);
+			boardGroup.add(newMesh);pieceMeshes[m.tr][m.tc]=newMesh;
+		},ANIM_DURATION*1000+50);
 		playPromotion();stats.promotions++;
 		spawnParticles(cellToWorld(m.tr,m.tc),'#ffa726',15);
 	}
@@ -768,6 +846,10 @@ export class ChessUISystem extends createSystem({
 				buildPieces(theme);updateLastMoveHighlight();
 				setScreen('playing');
 			}});
+			this.onClick(e,'btn-resign',()=>{
+				const winner=gameState.turn==='w'?'Black':'White';
+				endGame(winner+' wins by resignation!',gameState.turn==='w'?'loss':'win');
+			});
 			this.onClick(e,'btn-quit',()=>{setScreen('title');});
 		}else if(name==='go'){
 			this.onClick(e,'btn-rematch',()=>{this.startCountdown();});
@@ -876,12 +958,17 @@ export class ChessUISystem extends createSystem({
 		const diffNames=['Random','Easy','Medium','Hard','Expert'];
 		const modeNames:Record<string,string>={vsai:'VS AI - '+diffNames[difficulty],local:'Local 2P',timed:'Timed 5min',blitz:'Blitz 2min',daily:'Daily Puzzle',practice:'Practice'};
 		this.setText(e,'hud-mode',modeNames[gameMode]||gameMode);
+		// per-player clocks
 		if(timerLimit>0){
-			const rem=Math.max(0,timerLimit-gameTimer);const m=Math.floor(rem/60);const s=Math.floor(rem%60);
-			this.setText(e,'hud-time',(m<10?'0':'')+m+':'+(s<10?'0':'')+s);
+			const wm=Math.floor(whiteTimeLeft/60);const ws=Math.floor(whiteTimeLeft%60);
+			const bm=Math.floor(blackTimeLeft/60);const bs=Math.floor(blackTimeLeft%60);
+			this.setText(e,'hud-wtime',(wm<10?'0':'')+wm+':'+(ws<10?'0':'')+ws);
+			this.setText(e,'hud-btime',(bm<10?'0':'')+bm+':'+(bs<10?'0':'')+bs);
 		}else{
 			const m=Math.floor(gameTimer/60);const s=Math.floor(gameTimer%60);
-			this.setText(e,'hud-time',(m<10?'0':'')+m+':'+(s<10?'0':'')+s);
+			const timeStr=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+			this.setText(e,'hud-wtime',timeStr);
+			this.setText(e,'hud-btime','--:--');
 		}
 		this.setText(e,'hud-moves','Moves: '+gameState.history.length);
 		// material balance
@@ -911,12 +998,17 @@ export class ChessUISystem extends createSystem({
 	}
 	updateGameover(){
 		const e=this.docs['go']?.entity;if(!e)return;
-		const last=gameState.history.length>0?gameState.history[gameState.history.length-1]:null;
 		if(isCheckmate(gameState)){
 			this.setText(e,'go-result','CHECKMATE!');
 			this.setText(e,'go-winner',(gameState.turn==='w'?'Black':'White')+' Wins');
 		}else if(isStalemate(gameState)){
 			this.setText(e,'go-result','STALEMATE');this.setText(e,'go-winner','Draw');
+		}else if(timerLimit>0&&(whiteTimeLeft<=0||blackTimeLeft<=0)){
+			this.setText(e,'go-result','TIME OUT!');
+			this.setText(e,'go-winner',(whiteTimeLeft<=0?'Black':'White')+' Wins');
+		}else if(screenState==='gameover'&&!isCheckmate(gameState)&&!isStalemate(gameState)&&!isDraw(gameState)){
+			this.setText(e,'go-result','RESIGNED');
+			this.setText(e,'go-winner',(gameState.turn==='w'?'Black':'White')+' Wins');
 		}else{
 			this.setText(e,'go-result','DRAW');this.setText(e,'go-winner','Game Over');
 		}
@@ -957,8 +1049,17 @@ export class ChessUISystem extends createSystem({
 		// timer
 		if(screenState==='playing'&&timerRunning){
 			gameTimer+=delta;
-			if(timerLimit>0&&gameTimer>=timerLimit){
-				endGame('Time up!','loss');
+			if(timerLimit>0){
+				// decrement active player's clock
+				if(gameState.turn==='w')whiteTimeLeft=Math.max(0,whiteTimeLeft-delta);
+				else blackTimeLeft=Math.max(0,blackTimeLeft-delta);
+				if(whiteTimeLeft<=0){endGame('White ran out of time! Black wins!','loss');}
+				else if(blackTimeLeft<=0){endGame('Black ran out of time! White wins!','win');}
+				// countdown beep in last 10 seconds
+				if((gameState.turn==='w'&&whiteTimeLeft<=10)||(gameState.turn==='b'&&blackTimeLeft<=10)){
+					const t=gameState.turn==='w'?whiteTimeLeft:blackTimeLeft;
+					if(Math.floor(t)!==Math.floor(t+delta))playCountdown();
+				}
 			}
 		}
 		// toast
@@ -969,6 +1070,22 @@ export class ChessUISystem extends createSystem({
 		// update HUD
 		if(screenState==='playing'){this.updateHUD();this.updateHistory();}
 		if(screenState==='gameover')this.updateGameover();
+		// smooth piece animations
+		for(let i=activeAnimations.length-1;i>=0;i--){
+			const a=activeAnimations[i];
+			a.progress+=delta/a.duration;
+			if(a.progress>=1){
+				a.mesh.position.copy(a.endPos);
+				if(a.onComplete)a.onComplete();
+				activeAnimations.splice(i,1);
+			}else{
+				// ease-out cubic interpolation
+				const t=1-Math.pow(1-a.progress,3);
+				a.mesh.position.lerpVectors(a.startPos,a.endPos,t);
+				// slight arc lift during animation
+				a.mesh.position.y+=Math.sin(t*Math.PI)*0.03;
+			}
+		}
 		// particles
 		for(let i=particles.length-1;i>=0;i--){
 			const p=particles[i];p.life-=delta;

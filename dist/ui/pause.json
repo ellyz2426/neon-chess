@@ -61,6 +61,26 @@
         "sourceTag": "text",
         "type": "custom",
         "children": [
+          "RESIGN"
+        ],
+        "properties": {
+          "name": "btn-resign",
+          "fontsize": "13",
+          "color": "#ff9800",
+          "backgroundcolor": "#1a1000",
+          "padding": "6",
+          "borderradius": "4",
+          "width": "160",
+          "textalign": "center",
+          "marginbottom": "4",
+          "cursor": "pointer"
+        },
+        "dataUid": "uid-5"
+      },
+      {
+        "sourceTag": "text",
+        "type": "custom",
+        "children": [
           "QUIT TO MENU"
         ],
         "properties": {
@@ -74,12 +94,12 @@
           "textalign": "center",
           "cursor": "pointer"
         },
-        "dataUid": "uid-5"
+        "dataUid": "uid-6"
       }
     ],
     "properties": {
       "width": "240",
-      "height": "160",
+      "height": "200",
       "backgroundcolor": "#000a14",
       "borderradius": "8",
       "bordercolor": "#00e5ff",
@@ -98,7 +118,7 @@
         "column": 0
       },
       "end": {
-        "line": 5,
+        "line": 6,
         "column": 8
       }
     },
@@ -139,6 +159,16 @@
       },
       "end": {
         "line": 4,
+        "column": 189
+      }
+    },
+    "uid-6": {
+      "start": {
+        "line": 5,
+        "column": 2
+      },
+      "end": {
+        "line": 5,
         "column": 176
       }
     }

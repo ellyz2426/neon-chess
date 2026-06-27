@@ -1,6 +1,7 @@
-<panel width="240" height="160" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
+<panel width="240" height="200" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
   <text fontSize="18" fontWeight="bold" color="#00e5ff" marginBottom="10">PAUSED</text>
   <text name="btn-resume" fontSize="13" color="#000000" backgroundColor="#00e5ff" padding="6" borderRadius="4" width="160" textAlign="center" marginBottom="4" cursor="pointer">RESUME</text>
   <text name="btn-undo" fontSize="13" color="#ffa726" backgroundColor="#1a1200" padding="6" borderRadius="4" width="160" textAlign="center" marginBottom="4" cursor="pointer">UNDO MOVE</text>
+  <text name="btn-resign" fontSize="13" color="#ff9800" backgroundColor="#1a1000" padding="6" borderRadius="4" width="160" textAlign="center" marginBottom="4" cursor="pointer">RESIGN</text>
   <text name="btn-quit" fontSize="13" color="#f44336" backgroundColor="#1a0a08" padding="6" borderRadius="4" width="160" textAlign="center" cursor="pointer">QUIT TO MENU</text>
 </panel>
