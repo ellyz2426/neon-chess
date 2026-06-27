@@ -29,5 +29,5 @@
     "typescript": "^5.5.0",
     "vite": "^7.1.4"
   },
-  "description": "Neon Checkers VR - Classic draughts in a holographic VR arena"
+  "description": "Neon Chess VR - Full chess with AI in a holographic VR arena"
 }

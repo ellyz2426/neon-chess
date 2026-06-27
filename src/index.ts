@@ -4,7 +4,7 @@ import {
 	TorusGeometry, MeshStandardMaterial, MeshBasicMaterial, LineBasicMaterial,
 	Color, Vector3, Vector2, Quaternion, Fog, AmbientLight, PointLight, DirectionalLight,
 	BufferGeometry, Float32BufferAttribute, EdgesGeometry, LineSegments, AdditiveBlending,
-	Raycaster, PlaneGeometry, InputComponent, Follower, ScreenSpace,
+	Raycaster, PlaneGeometry, InputComponent, Follower,
 } from '@iwsdk/core';
 
 interface RuntimeInput {
@@ -12,7 +12,7 @@ interface RuntimeInput {
   xr?: { gamepads?: { right?: { getButtonDown(id: string): boolean; getButtonPressed(id: string): boolean; getAxesValues(id: string): { x: number; y: number } | undefined; }; left?: any; }; };
 }
 
-// ─── CONSTANTS ────────────────────────────────────────────────────────
+// --- CONSTANTS --------------------------------------------------------
 const E=0, WP=1,WN=2,WB=3,WR=4,WQ=5,WK=6, BP=7,BN=8,BB=9,BR=10,BQ=11,BK=12;
 const PIECE_NAMES=['','P','N','B','R','Q','K','p','n','b','r','q','k'];
 const PIECE_FULL=['','Pawn','Knight','Bishop','Rook','Queen','King','Pawn','Knight','Bishop','Rook','Queen','King'];
@@ -26,7 +26,7 @@ const BOARD_Y=0.9;
 const BOARD_OFFSET_X=-CELL_SIZE*3.5;
 const BOARD_OFFSET_Z=-CELL_SIZE*3.5;
 
-// ─── THEMES ──────────────────────────────────────────────────────────
+// --- THEMES ----------------------------------------------------------
 interface Theme { name:string; light:string; dark:string; accent:string; bg:string; gridC:string; fogC:string; wPiece:string; bPiece:string; glow:string; sel:string; move:string; }
 const THEMES:Theme[]=[
 	{name:'Neon Holodeck',light:'#1a3a4a',dark:'#0a1520',accent:'#00e5ff',bg:'#000811',gridC:'#00e5ff',fogC:'#000811',wPiece:'#00e5ff',bPiece:'#ff6e40',glow:'#00e5ff',sel:'#ffa726',move:'#4caf50'},
@@ -36,7 +36,7 @@ const THEMES:Theme[]=[
 	{name:'Solar Blaze',light:'#3a2a1a',dark:'#201408',accent:'#ff9100',bg:'#0a0500',gridC:'#ff9100',fogC:'#0a0500',wPiece:'#ff9100',bPiece:'#40c4ff',glow:'#ff9100',sel:'#ffa726',move:'#4caf50'},
 ];
 
-// ─── SKINS ──────────────────────────────────────────────────────────
+// --- SKINS ----------------------------------------------------------
 interface Skin { name:string; color:string; unlock:string; check:(s:any)=>boolean; }
 const SKINS:Skin[]=[
 	{name:'Neon Cyan',color:'#00e5ff',unlock:'Free',check:()=>true},
@@ -49,7 +49,7 @@ const SKINS:Skin[]=[
 	{name:'Chrome',color:'#ffffff',unlock:'Expert win',check:(s)=>s.expertWins>=1},
 ];
 
-// ─── ACHIEVEMENTS ────────────────────────────────────────────────────
+// --- ACHIEVEMENTS ----------------------------------------------------
 interface Ach { id:string; name:string; desc:string; check:(s:any)=>boolean; }
 const ACHIEVEMENTS:Ach[]=[
 	{id:'first_move',name:'First Move',desc:'Make your first move',check:s=>s.totalMoves>=1},
@@ -84,7 +84,7 @@ const ACHIEVEMENTS:Ach[]=[
 	{id:'level10',name:'Level 10',desc:'Reach level 10',check:s=>s.level>=10},
 ];
 
-// ─── CHESS ENGINE ────────────────────────────────────────────────────
+// --- CHESS ENGINE ----------------------------------------------------
 type Board=number[][];
 interface CastleRights{K:boolean;Q:boolean;k:boolean;q:boolean;}
 interface Move{fr:number;fc:number;tr:number;tc:number;piece:number;captured:number;promotion:number;castle:string;enPassant:boolean;epCapR?:number;epCapC?:number;}
@@ -223,7 +223,7 @@ function moveNotation(m:Move,g:GameState):string{
 	return s;
 }
 
-// ─── AI ENGINE ────────────────────────────────────────────────────────
+// --- AI ENGINE --------------------------------------------------------
 const PIECE_VALUES=[0,100,320,330,500,900,20000,100,320,330,500,900,20000];
 // piece-square tables (from white's perspective, row 0=rank 8)
 const PST_PAWN=[0,0,0,0,0,0,0,0, 50,50,50,50,50,50,50,50, 10,10,20,30,30,20,10,10, 5,5,10,25,25,10,5,5, 0,0,0,20,20,0,0,0, 5,-5,-10,0,0,-10,-5,5, 5,10,10,-20,-20,10,10,5, 0,0,0,0,0,0,0,0];
@@ -278,7 +278,7 @@ function getAIMove(g:GameState,depth:number):Move|null{
 	return m;
 }
 
-// ─── AUDIO ───────────────────────────────────────────────────────────
+// --- AUDIO -----------------------------------------------------------
 let audioCtx:AudioContext|null=null;let masterGain:GainNode;let sfxGain:GainNode;let musicGain:GainNode;
 let masterVol=0.8,sfxVol=0.8,musicVol=0.8;
 function initAudio(){if(audioCtx)return;audioCtx=new AudioContext();masterGain=audioCtx.createGain();masterGain.gain.value=masterVol;masterGain.connect(audioCtx.destination);sfxGain=audioCtx.createGain();sfxGain.gain.value=sfxVol;sfxGain.connect(masterGain);musicGain=audioCtx.createGain();musicGain.gain.value=musicVol;musicGain.connect(masterGain);}
@@ -311,7 +311,7 @@ function startDrone(){
 }
 function stopDrone(){droneOscs.forEach(o=>{try{o.stop();}catch(e){}});droneOscs=[];droneGains=[];}
 
-// ─── GAME STATE MANAGER ────────────────────────────────────────────
+// --- GAME STATE MANAGER --------------------------------------------
 type ScreenState='title'|'mode'|'difficulty'|'playing'|'paused'|'gameover'|'settings'|'help'|'achievements'|'stats'|'skins'|'leaderboard'|'countdown'|'promote';
 interface Stats{games:number;wins:number;losses:number;draws:number;totalCaptures:number;totalChecks:number;totalMoves:number;checkmates:number;castles:number;promotions:number;enPassants:number;bestStreak:number;currentStreak:number;totalScore:number;dailyDone:number;dailyStreak:number;lastDailyDate:string;scholarMates:number;queenSacWins:number;hardWins:number;expertWins:number;stalemates:number;speedWins:number;timedWins:number;blitzWins:number;bestCaptureStreak:number;totalWipes:number;mostChecksInGame:number;level:number;xp:number;themesUsed:Set<string>;modesPlayed:Set<string>;skinsUnlocked:number;achUnlocked:Set<string>;leaderboard:{score:number;mode:string;date:string;moves:number}[];skinIdx:number;themeIdx:number;achPage:number;}
 
@@ -328,7 +328,7 @@ function saveStats(s:Stats){
 	try{localStorage.setItem('neon-chess-stats',JSON.stringify(d));}catch{}
 }
 
-// ─── GLOBALS ───────────────────────────────────────────────────────
+// --- GLOBALS -------------------------------------------------------
 let world:World;
 let stats:Stats;
 let screenState:ScreenState='title';
@@ -352,13 +352,15 @@ let cellMeshes:Mesh[][]=[];
 let pieceMeshes:(Group|null)[][]=[];
 let moveIndicators:Mesh[]=[];
 let lastMoveFrom:Mesh|null=null;let lastMoveTo:Mesh|null=null;
+let checkHighlight:Mesh|null=null;
 let capturedWhite:Group[]=[];let capturedBlack:Group[]=[];
+let capturedWhiteList:number[]=[];let capturedBlackList:number[]=[];
 const particles:{mesh:Mesh;vel:Vector3;life:number;maxLife:number}[]=[];
 const raycaster=new Raycaster();
 const mouseNDC=new Vector2();
 let boardPlane:Mesh;
 
-// ─── PIECE GEOMETRY BUILDERS ──────────────────────────────────────────
+// --- PIECE GEOMETRY BUILDERS ------------------------------------------
 function createPieceMesh(type:number,isW:boolean,theme:Theme):Group{
 	const g=new Group();const color=isW?theme.wPiece:theme.bPiece;
 	const mat=new MeshStandardMaterial({color:new Color(color),emissive:new Color(color),emissiveIntensity:0.4,metalness:0.3,roughness:0.6});
@@ -401,10 +403,10 @@ function createPieceMesh(type:number,isW:boolean,theme:Theme):Group{
 	return g;
 }
 
-// ─── 3D SCENE SETUP ──────────────────────────────────────────────────
+// --- 3D SCENE SETUP --------------------------------------------------
 function buildBoard(scene:any,theme:Theme){
 	if(boardGroup)scene.remove(boardGroup);
-	boardGroup=new Group();boardGroup.position.set(0,BOARD_Y,-2.5);
+	boardGroup=new Group();boardGroup.position.set(0,BOARD_Y,-2.0);
 	cellMeshes=[];
 	const lightMat=new MeshStandardMaterial({color:new Color(theme.light),emissive:new Color(theme.light),emissiveIntensity:0.1,metalness:0.4,roughness:0.7});
 	const darkMat=new MeshStandardMaterial({color:new Color(theme.dark),emissive:new Color(theme.dark),emissiveIntensity:0.05,metalness:0.4,roughness:0.7});
@@ -430,6 +432,11 @@ function buildBoard(scene:any,theme:Theme){
 		const d1=new Mesh(new SphereGeometry(0.008,4,4),dotMat);d1.position.set(BOARD_OFFSET_X+i*CELL_SIZE,0.02,BOARD_OFFSET_Z-CELL_SIZE/2-0.04);boardGroup.add(d1);
 		const d2=new Mesh(new SphereGeometry(0.008,4,4),dotMat);d2.position.set(BOARD_OFFSET_X-CELL_SIZE/2-0.04,0.02,BOARD_OFFSET_Z+i*CELL_SIZE);boardGroup.add(d2);
 	}
+	// check highlight
+	if(checkHighlight)boardGroup.remove(checkHighlight);
+	const checkMat=new MeshBasicMaterial({color:new Color('#ff1744'),transparent:true,opacity:0.4,blending:AdditiveBlending});
+	checkHighlight=new Mesh(new BoxGeometry(CELL_SIZE*0.95,0.01,CELL_SIZE*0.95),checkMat);
+	checkHighlight.position.y=0.018;checkHighlight.visible=false;boardGroup.add(checkHighlight);
 	// invisible plane for raycasting
 	boardPlane=new Mesh(new PlaneGeometry(CELL_SIZE*10,CELL_SIZE*10),new MeshBasicMaterial({visible:false}));
 	boardPlane.rotation.x=-Math.PI/2;boardPlane.position.y=0.015;boardGroup.add(boardPlane);
@@ -495,6 +502,31 @@ function buildEnvironment(scene:any,theme:Theme){
 
 function cellToWorld(r:number,c:number):Vector3{return new Vector3(BOARD_OFFSET_X+c*CELL_SIZE,0.015,BOARD_OFFSET_Z+r*CELL_SIZE);}
 
+function updateCapturedDisplay(theme:Theme){
+	// clear existing
+	capturedWhite.forEach(m=>boardGroup.remove(m));capturedBlack.forEach(m=>boardGroup.remove(m));
+	capturedWhite=[];capturedBlack=[];
+	const trayX=BOARD_OFFSET_X+8*CELL_SIZE+CELL_SIZE*0.6;
+	const trayXl=BOARD_OFFSET_X-CELL_SIZE*0.6;
+	const scale=0.5;
+	// black pieces captured by white (show on right)
+	for(let i=0;i<capturedBlackList.length;i++){
+		const m=createPieceMesh(capturedBlackList[i],false,theme);
+		m.scale.setScalar(scale);
+		const row=Math.floor(i/2);const col=i%2;
+		m.position.set(trayX+col*CELL_SIZE*0.5,0.01,BOARD_OFFSET_Z+row*CELL_SIZE*0.4);
+		boardGroup.add(m);capturedBlack.push(m);
+	}
+	// white pieces captured by black (show on left)
+	for(let i=0;i<capturedWhiteList.length;i++){
+		const m=createPieceMesh(capturedWhiteList[i],true,theme);
+		m.scale.setScalar(scale);
+		const row=Math.floor(i/2);const col=i%2;
+		m.position.set(trayXl-col*CELL_SIZE*0.5,0.01,BOARD_OFFSET_Z+row*CELL_SIZE*0.4);
+		boardGroup.add(m);capturedWhite.push(m);
+	}
+}
+
 function showMoveIndicators(){
 	moveIndicators.forEach(m=>m.visible=false);
 	legalMovesForSelected.forEach((m,i)=>{if(i>=moveIndicators.length)return;
@@ -510,6 +542,14 @@ function updateLastMoveHighlight(){
 	lastMoveFrom!.position.set(BOARD_OFFSET_X+m.fc*CELL_SIZE,0.015,BOARD_OFFSET_Z+m.fr*CELL_SIZE);lastMoveFrom!.visible=true;
 	lastMoveTo!.position.set(BOARD_OFFSET_X+m.tc*CELL_SIZE,0.015,BOARD_OFFSET_Z+m.tr*CELL_SIZE);lastMoveTo!.visible=true;
 }
+function updateCheckHighlight(){
+	if(!checkHighlight)return;
+	if(inCheck(gameState.board,gameState.turn)){
+		const[kr,kc]=findKing(gameState.board,gameState.turn);
+		checkHighlight.position.set(BOARD_OFFSET_X+kc*CELL_SIZE,0.018,BOARD_OFFSET_Z+kr*CELL_SIZE);
+		checkHighlight.visible=true;
+	}else{checkHighlight.visible=false;}
+}
 
 function spawnParticles(pos:Vector3,color:string,count:number){
 	for(let i=0;i<count;i++){
@@ -521,13 +561,14 @@ function spawnParticles(pos:Vector3,color:string,count:number){
 	}
 }
 
-// ─── GAME LOGIC ──────────────────────────────────────────────────────
+// --- GAME LOGIC ------------------------------------------------------
 function newGame(){
 	gameState={board:initBoard(),turn:'w',castle:{K:true,Q:true,k:true,q:true},epTarget:null,halfMove:0,fullMove:1,history:[],posHistory:[]};
 	gameState.posHistory.push(boardKey(gameState));
 	selectedCell=null;legalMovesForSelected=[];pendingPromotion=null;
 	gameTimer=0;timerRunning=false;checksThisGame=0;captureStreak=0;queenSacrificed=false;
 	whiteTime=0;blackTime=0;aiThinking=false;
+	capturedWhiteList=[];capturedBlackList=[];
 	if(gameMode==='timed'){timerLimit=300;}else if(gameMode==='blitz'){timerLimit=120;}else{timerLimit=0;}
 }
 
@@ -540,11 +581,16 @@ function executeMove(m:Move){
 		playCapture();captureStreak++;stats.totalCaptures++;
 		if(captureStreak>stats.bestCaptureStreak)stats.bestCaptureStreak=captureStreak;
 		spawnParticles(cellToWorld(m.tr,m.tc),isWhite(m.piece)?theme.bPiece:theme.wPiece,12);
+		if(isWhite(m.captured))capturedWhiteList.push(m.captured);else capturedBlackList.push(m.captured);
+		updateCapturedDisplay(theme);
 	}else{captureStreak=0;playMove();}
 	if(m.enPassant&&m.epCapR!==undefined&&m.epCapC!==undefined){
 		const epMesh=pieceMeshes[m.epCapR][m.epCapC];if(epMesh){boardGroup.remove(epMesh);pieceMeshes[m.epCapR][m.epCapC]=null;}
 		stats.enPassants++;stats.totalCaptures++;
 		spawnParticles(cellToWorld(m.epCapR,m.epCapC),isWhite(m.piece)?theme.bPiece:theme.wPiece,8);
+		const epPiece=isWhite(m.piece)?BP:WP;
+		if(isWhite(epPiece))capturedWhiteList.push(epPiece);else capturedBlackList.push(epPiece);
+		updateCapturedDisplay(theme);
 	}
 	if(m.castle){
 		playCastle();stats.castles++;
@@ -581,7 +627,7 @@ function executeMove(m:Move){
 		playCheck();checksThisGame++;stats.totalChecks++;
 		showToast('Check!');
 	}
-	updateLastMoveHighlight();selectedCell=null;legalMovesForSelected=[];hideMoveIndicators();
+	updateLastMoveHighlight();updateCheckHighlight();selectedCell=null;legalMovesForSelected=[];hideMoveIndicators();
 	// check game end
 	if(isCheckmate(gameState)){
 		const winner=gameState.turn==='w'?'Black':'White';
@@ -633,11 +679,11 @@ function checkAchievements(){
 	stats.skinsUnlocked=SKINS.filter(s=>s.check(stats)).length;
 }
 
-// ─── UI SYSTEM ──────────────────────────────────────────────────────
+// --- UI SYSTEM ------------------------------------------------------
 function setScreen(s:ScreenState){screenState=s;playClick();}
 
 
-// ─── ECS SYSTEM ────────────────────────────────────────────────────────
+// --- ECS SYSTEM --------------------------------------------------------
 const TITLES=['Novice','Beginner','Student','Apprentice','Player','Competitor','Strategist','Tactician','Candidate','Expert',
 	'Master','Senior Master','National Master','FIDE Master','International Master','Grandmaster','Super GM','Legend','Champion','Immortal'];
 
@@ -838,9 +884,16 @@ export class ChessUISystem extends createSystem({
 			this.setText(e,'hud-time',(m<10?'0':'')+m+':'+(s<10?'0':'')+s);
 		}
 		this.setText(e,'hud-moves','Moves: '+gameState.history.length);
+		// material balance
+		let wMat=0,bMat=0;
+		const vals=[0,1,3,3,5,9,0];// P,N,B,R,Q (king=0 for display)
+		for(let r=0;r<8;r++)for(let c=0;c<8;c++){const p=gameState.board[r][c];if(p===E)continue;
+			const v=vals[pieceType(p)];if(isWhite(p))wMat+=v;else bMat+=v;}
+		const adv=wMat-bMat;
+		const advStr=adv>0?'White +'+adv:adv<0?'Black +'+(-adv):'Equal';
 		if(aiThinking)this.setText(e,'hud-status','AI thinking...');
-		else if(inCheck(gameState.board,gameState.turn))this.setText(e,'hud-status','CHECK!');
-		else this.setText(e,'hud-status','');
+		else if(inCheck(gameState.board,gameState.turn))this.setText(e,'hud-status','CHECK! | '+advStr);
+		else this.setText(e,'hud-status',advStr);
 	}
 	updateHistory(){
 		const e=this.docs['hist']?.entity;if(!e)return;
@@ -928,6 +981,11 @@ export class ChessUISystem extends createSystem({
 			const pm=pieceMeshes[selectedCell[0]][selectedCell[1]];
 			if(pm)pm.position.y=0.01+Math.sin(time*4)*0.01+0.015;
 		}
+		// check highlight pulse
+		if(checkHighlight&&checkHighlight.visible){
+			const cm=checkHighlight.material as MeshBasicMaterial;
+			cm.opacity=0.25+Math.sin(time*6)*0.2;
+		}
 		// floating decorations
 		this.scene.traverse((obj:any)=>{
 			if(obj.userData.rotSpeed){obj.rotation.y+=obj.userData.rotSpeed*delta;obj.position.y=obj.userData.bobBase+Math.sin(time*obj.userData.bobSpeed)*0.15;}
@@ -987,7 +1045,7 @@ function simpleMoveStr(m:Move):string{
 	return s;
 }
 
-// ─── CLICK HANDLING ─────────────────────────────────────────────────
+// --- CLICK HANDLING -------------------------------------------------
 function handleBoardClick(r:number,c:number){
 	if(screenState!=='playing'||aiThinking)return;
 	if(gameMode==='vsai'&&gameState.turn==='b')return;// AI's turn
@@ -1027,7 +1085,7 @@ function handleBoardClick(r:number,c:number){
 	}
 }
 
-// ─── MAIN ENTRY ──────────────────────────────────────────────────────
+// --- MAIN ENTRY ------------------------------------------------------
 async function main(){
 	const container=document.getElementById('app') as HTMLDivElement;
 	world=await World.create(container,{
@@ -1043,22 +1101,22 @@ async function main(){
 
 	// create panel entities
 	const panelConfigs=[
-		{config:'./ui/title.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/mode.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/difficulty.json',pos:[0,1.8,-3],scale:0.004,screen:true},
+		{config:'./ui/title.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/mode.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/difficulty.json',pos:[0,1.5,-1.8],scale:0.005},
 		{config:'./ui/hud.json',pos:[0,0,0],scale:0.002,follower:true},
-		{config:'./ui/pause.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/gameover.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/settings.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/help.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/achievements.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/stats.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/skins.json',pos:[0,1.8,-3],scale:0.004,screen:true},
-		{config:'./ui/leaderboard.json',pos:[0,1.8,-3],scale:0.004,screen:true},
+		{config:'./ui/pause.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/gameover.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/settings.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/help.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/achievements.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/stats.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/skins.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/leaderboard.json',pos:[0,1.5,-1.8],scale:0.005},
 		{config:'./ui/toast.json',pos:[0,0,0],scale:0.002,follower:true,offsetY:0.15},
-		{config:'./ui/countdown.json',pos:[0,0,0],scale:0.003,follower:true},
-		{config:'./ui/promote.json',pos:[0,1.5,-2.5],scale:0.004,screen:true},
-		{config:'./ui/history.json',pos:[1.2,1.5,-2.5],scale:0.003},
+		{config:'./ui/countdown.json',pos:[0,0,0],scale:0.004,follower:true},
+		{config:'./ui/promote.json',pos:[0,1.5,-1.8],scale:0.005},
+		{config:'./ui/history.json',pos:[0.9,1.2,-1.8],scale:0.003},
 	];
 
 	for(const pc of panelConfigs){
@@ -1071,7 +1129,7 @@ async function main(){
 			const offsetVec=entity.getVectorView(Follower,'offsetPosition');
 			if(offsetVec){offsetVec[0]=0;offsetVec[1]=pc.offsetY||0.1;offsetVec[2]=-0.5;}
 		}
-		if(pc.screen){entity.addComponent(ScreenSpace);}
+		// No ScreenSpace - use 3D panels with visibility toggle
 	}
 
 	world.registerSystem(ChessUISystem);
