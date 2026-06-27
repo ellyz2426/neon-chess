@@ -1,0 +1,10 @@
+<panel width="300" height="340" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
+  <text fontSize="18" fontWeight="bold" color="#00e5ff" marginBottom="10">SELECT MODE</text>
+  <text name="btn-vsai" fontSize="13" color="#000000" backgroundColor="#00e5ff" padding="6" borderRadius="4" width="200" textAlign="center" marginBottom="4" cursor="pointer">VS COMPUTER</text>
+  <text name="btn-local" fontSize="13" color="#00e5ff" backgroundColor="#001a2e" padding="6" borderRadius="4" width="200" textAlign="center" marginBottom="4" cursor="pointer">LOCAL 2P</text>
+  <text name="btn-timed" fontSize="13" color="#00e5ff" backgroundColor="#001a2e" padding="6" borderRadius="4" width="200" textAlign="center" marginBottom="4" cursor="pointer">TIMED (5 MIN)</text>
+  <text name="btn-blitz" fontSize="13" color="#00e5ff" backgroundColor="#001a2e" padding="6" borderRadius="4" width="200" textAlign="center" marginBottom="4" cursor="pointer">BLITZ (2 MIN)</text>
+  <text name="btn-daily" fontSize="13" color="#ffa726" backgroundColor="#1a1200" padding="6" borderRadius="4" width="200" textAlign="center" marginBottom="4" cursor="pointer">DAILY PUZZLE</text>
+  <text name="btn-practice" fontSize="13" color="#00e5ff" backgroundColor="#001a2e" padding="6" borderRadius="4" width="200" textAlign="center" marginBottom="4" cursor="pointer">PRACTICE</text>
+  <text name="btn-mode-back" fontSize="12" color="#888888" backgroundColor="#111111" padding="5" borderRadius="4" width="200" textAlign="center" marginTop="4" cursor="pointer">BACK</text>
+</panel>

@@ -1,0 +1,11 @@
+<panel width="300" height="300" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
+  <text name="go-result" fontSize="22" fontWeight="bold" color="#ffa726" marginBottom="6">CHECKMATE!</text>
+  <text name="go-winner" fontSize="14" color="#00e5ff" marginBottom="8">White Wins</text>
+  <text name="go-mode" fontSize="10" color="#80deea" marginBottom="2">VS AI - Medium</text>
+  <text name="go-moves" fontSize="10" color="#80deea" marginBottom="2">Moves: 24</text>
+  <text name="go-time" fontSize="10" color="#80deea" marginBottom="2">Time: 05:32</text>
+  <text name="go-captures" fontSize="10" color="#80deea" marginBottom="2">Captures: 8</text>
+  <text name="go-checks" fontSize="10" color="#80deea" marginBottom="8">Checks: 3</text>
+  <text name="btn-rematch" fontSize="13" color="#000000" backgroundColor="#00e5ff" padding="6" borderRadius="4" width="180" textAlign="center" marginBottom="4" cursor="pointer">REMATCH</text>
+  <text name="btn-go-menu" fontSize="13" color="#888888" backgroundColor="#111111" padding="5" borderRadius="4" width="180" textAlign="center" cursor="pointer">MAIN MENU</text>
+</panel>

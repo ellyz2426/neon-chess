@@ -1,0 +1,23 @@
+<panel width="160" height="340" backgroundColor="#000a1488" borderRadius="6" borderColor="#00e5ff44" borderWidth="1" flexDirection="column" alignItems="center" padding="6">
+  <text fontSize="11" fontWeight="bold" color="#00e5ff" marginBottom="4">MOVES</text>
+  <text name="mv-0" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-1" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-2" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-3" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-4" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-5" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-6" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-7" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-8" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-9" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-10" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-11" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-12" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-13" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-14" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-15" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-16" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-17" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-18" fontSize="7" color="#80deea" marginBottom="1"></text>
+  <text name="mv-19" fontSize="7" color="#80deea" marginBottom="1"></text>
+</panel>

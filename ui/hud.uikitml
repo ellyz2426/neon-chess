@@ -1,0 +1,7 @@
+<panel width="240" height="100" backgroundColor="#000a1488" borderRadius="6" borderColor="#00e5ff44" borderWidth="1" flexDirection="column" alignItems="center" padding="6">
+  <text name="hud-turn" fontSize="12" fontWeight="bold" color="#00e5ff" marginBottom="2">WHITE to move</text>
+  <text name="hud-mode" fontSize="9" color="#4dd0e1" marginBottom="2">VS AI - Medium</text>
+  <text name="hud-time" fontSize="10" color="#80deea" marginBottom="2">--:--</text>
+  <text name="hud-moves" fontSize="9" color="#80deea" marginBottom="1">Moves: 0</text>
+  <text name="hud-status" fontSize="10" fontWeight="bold" color="#ffa726"></text>
+</panel>

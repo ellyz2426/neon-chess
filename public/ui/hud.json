@@ -1,0 +1,152 @@
+{
+  "element": {
+    "sourceTag": "panel",
+    "type": "custom",
+    "children": [
+      {
+        "sourceTag": "text",
+        "type": "custom",
+        "children": [
+          "WHITE to move"
+        ],
+        "properties": {
+          "name": "hud-turn",
+          "fontsize": "12",
+          "fontweight": "bold",
+          "color": "#00e5ff",
+          "marginbottom": "2"
+        },
+        "dataUid": "uid-2"
+      },
+      {
+        "sourceTag": "text",
+        "type": "custom",
+        "children": [
+          "VS AI - Medium"
+        ],
+        "properties": {
+          "name": "hud-mode",
+          "fontsize": "9",
+          "color": "#4dd0e1",
+          "marginbottom": "2"
+        },
+        "dataUid": "uid-3"
+      },
+      {
+        "sourceTag": "text",
+        "type": "custom",
+        "children": [
+          "--:--"
+        ],
+        "properties": {
+          "name": "hud-time",
+          "fontsize": "10",
+          "color": "#80deea",
+          "marginbottom": "2"
+        },
+        "dataUid": "uid-4"
+      },
+      {
+        "sourceTag": "text",
+        "type": "custom",
+        "children": [
+          "Moves: 0"
+        ],
+        "properties": {
+          "name": "hud-moves",
+          "fontsize": "9",
+          "color": "#80deea",
+          "marginbottom": "1"
+        },
+        "dataUid": "uid-5"
+      },
+      {
+        "sourceTag": "text",
+        "type": "custom",
+        "children": [],
+        "properties": {
+          "name": "hud-status",
+          "fontsize": "10",
+          "fontweight": "bold",
+          "color": "#ffa726"
+        },
+        "dataUid": "uid-6"
+      }
+    ],
+    "properties": {
+      "width": "240",
+      "height": "100",
+      "backgroundcolor": "#000a1488",
+      "borderradius": "6",
+      "bordercolor": "#00e5ff44",
+      "borderwidth": "1",
+      "flexdirection": "column",
+      "alignitems": "center",
+      "padding": "6"
+    },
+    "dataUid": "uid-1"
+  },
+  "classes": {},
+  "ranges": {
+    "uid-1": {
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 8
+      }
+    },
+    "uid-2": {
+      "start": {
+        "line": 1,
+        "column": 2
+      },
+      "end": {
+        "line": 1,
+        "column": 109
+      }
+    },
+    "uid-3": {
+      "start": {
+        "line": 2,
+        "column": 2
+      },
+      "end": {
+        "line": 2,
+        "column": 91
+      }
+    },
+    "uid-4": {
+      "start": {
+        "line": 3,
+        "column": 2
+      },
+      "end": {
+        "line": 3,
+        "column": 83
+      }
+    },
+    "uid-5": {
+      "start": {
+        "line": 4,
+        "column": 2
+      },
+      "end": {
+        "line": 4,
+        "column": 86
+      }
+    },
+    "uid-6": {
+      "start": {
+        "line": 5,
+        "column": 2
+      },
+      "end": {
+        "line": 5,
+        "column": 81
+      }
+    }
+  }
+}

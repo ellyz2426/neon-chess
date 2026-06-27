@@ -1,0 +1,16 @@
+<panel width="280" height="300" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
+  <text fontSize="16" fontWeight="bold" color="#00e5ff" marginBottom="8">CAREER STATS</text>
+  <text name="stat-games" fontSize="9" color="#4dd0e1" marginBottom="2">Games: 0</text>
+  <text name="stat-wins" fontSize="9" color="#4dd0e1" marginBottom="2">Wins: 0</text>
+  <text name="stat-losses" fontSize="9" color="#4dd0e1" marginBottom="2">Losses: 0</text>
+  <text name="stat-draws" fontSize="9" color="#4dd0e1" marginBottom="2">Draws: 0</text>
+  <text name="stat-winrate" fontSize="9" color="#4dd0e1" marginBottom="2">Win Rate: 0%</text>
+  <text name="stat-captures" fontSize="9" color="#4dd0e1" marginBottom="2">Total Captures: 0</text>
+  <text name="stat-checks" fontSize="9" color="#4dd0e1" marginBottom="2">Total Checks: 0</text>
+  <text name="stat-mates" fontSize="9" color="#4dd0e1" marginBottom="2">Checkmates: 0</text>
+  <text name="stat-castles" fontSize="9" color="#4dd0e1" marginBottom="2">Castles: 0</text>
+  <text name="stat-promotions" fontSize="9" color="#4dd0e1" marginBottom="2">Promotions: 0</text>
+  <text name="stat-streak" fontSize="9" color="#4dd0e1" marginBottom="2">Best Streak: 0</text>
+  <text name="stat-level" fontSize="9" color="#ffa726" marginBottom="8">Level: 1 - Novice</text>
+  <text name="btn-stats-back" fontSize="12" color="#888888" backgroundColor="#111111" padding="5" borderRadius="4" width="160" textAlign="center" cursor="pointer">BACK</text>
+</panel>

@@ -1,0 +1,12 @@
+<panel width="300" height="280" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
+  <text fontSize="16" fontWeight="bold" color="#00e5ff" marginBottom="8">PIECE THEMES</text>
+  <text name="skin-0" fontSize="10" color="#00e5ff" backgroundColor="#001a2e" padding="5" borderRadius="4" width="200" textAlign="center" marginBottom="3" cursor="pointer">Neon Cyan [EQUIPPED]</text>
+  <text name="skin-1" fontSize="10" color="#ff9800" backgroundColor="#1a1200" padding="5" borderRadius="4" width="200" textAlign="center" marginBottom="3" cursor="pointer">Solar Flare (50 wins)</text>
+  <text name="skin-2" fontSize="10" color="#e040fb" backgroundColor="#1a0820" padding="5" borderRadius="4" width="200" textAlign="center" marginBottom="3" cursor="pointer">Plasma Pink (5K score)</text>
+  <text name="skin-3" fontSize="10" color="#69f0ae" backgroundColor="#0a2010" padding="5" borderRadius="4" width="200" textAlign="center" marginBottom="3" cursor="pointer">Frost Mint (10 games)</text>
+  <text name="skin-4" fontSize="10" color="#f44336" backgroundColor="#1a0a08" padding="5" borderRadius="4" width="200" textAlign="center" marginBottom="3" cursor="pointer">Inferno (x5 combo)</text>
+  <text name="skin-5" fontSize="10" color="#b388ff" backgroundColor="#140828" padding="5" borderRadius="4" width="200" textAlign="center" marginBottom="3" cursor="pointer">Void Purple (80% win)</text>
+  <text name="skin-6" fontSize="10" color="#ffd54f" backgroundColor="#1a1600" padding="5" borderRadius="4" width="200" textAlign="center" marginBottom="3" cursor="pointer">Royal Gold (all modes)</text>
+  <text name="skin-7" fontSize="10" color="#ffffff" backgroundColor="#1a1a1a" padding="5" borderRadius="4" width="200" textAlign="center" marginBottom="3" cursor="pointer">Chrome (Expert win)</text>
+  <text name="btn-skins-back" fontSize="12" color="#888888" backgroundColor="#111111" padding="5" borderRadius="4" width="160" textAlign="center" marginTop="4" cursor="pointer">BACK</text>
+</panel>

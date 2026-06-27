@@ -1,0 +1,9 @@
+<panel width="260" height="140" backgroundColor="#000a14" borderRadius="8" borderColor="#ffa726" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
+  <text fontSize="14" fontWeight="bold" color="#ffa726" marginBottom="8">PROMOTE PAWN TO:</text>
+  <panel flexDirection="row" marginBottom="8">
+    <text name="btn-promo-queen" fontSize="12" color="#000000" backgroundColor="#ffa726" padding="6" borderRadius="4" marginRight="4" cursor="pointer">QUEEN</text>
+    <text name="btn-promo-rook" fontSize="12" color="#ffa726" backgroundColor="#1a1200" padding="6" borderRadius="4" marginRight="4" cursor="pointer">ROOK</text>
+    <text name="btn-promo-bishop" fontSize="12" color="#ffa726" backgroundColor="#1a1200" padding="6" borderRadius="4" marginRight="4" cursor="pointer">BISHOP</text>
+    <text name="btn-promo-knight" fontSize="12" color="#ffa726" backgroundColor="#1a1200" padding="6" borderRadius="4" cursor="pointer">KNIGHT</text>
+  </panel>
+</panel>

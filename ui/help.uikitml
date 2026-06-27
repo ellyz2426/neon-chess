@@ -1,0 +1,25 @@
+<panel width="320" height="380" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="10">
+  <text fontSize="16" fontWeight="bold" color="#00e5ff" marginBottom="6">HOW TO PLAY</text>
+  <text fontSize="9" color="#80deea" marginBottom="4">-- Browser Controls --</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">Click: Select piece / Move</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">ESC / P: Pause</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">U: Undo last move</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">H: Hint (AI suggestion)</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="4">R: Rematch (game over)</text>
+  <text fontSize="9" color="#80deea" marginBottom="4">-- VR Controls --</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">Trigger: Select / Move</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">B Button: Pause</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="4">Pointer: Aim at board</text>
+  <text fontSize="9" color="#80deea" marginBottom="4">-- Chess Rules --</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">King: 1 square any dir</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">Queen: Any dir, any dist</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">Rook: Horizontal/vertical</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">Bishop: Diagonal</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">Knight: L-shape (jumps)</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="4">Pawn: Forward, captures diag</text>
+  <text fontSize="9" color="#80deea" marginBottom="4">-- Special Moves --</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">Castling: King+Rook swap</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="1">En Passant: Pawn capture</text>
+  <text fontSize="8" color="#4dd0e1" marginBottom="4">Promotion: Pawn to Queen</text>
+  <text name="btn-help-back" fontSize="12" color="#888888" backgroundColor="#111111" padding="5" borderRadius="4" width="160" textAlign="center" cursor="pointer">BACK</text>
+</panel>

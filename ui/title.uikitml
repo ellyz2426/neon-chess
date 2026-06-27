@@ -1,0 +1,12 @@
+<panel width="320" height="380" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
+  <text name="title-text" fontSize="28" fontWeight="bold" color="#00e5ff" marginBottom="4">NEON CHESS</text>
+  <text name="subtitle" fontSize="10" color="#4dd0e1" marginBottom="12">Holodeck Strategy</text>
+  <text name="level-display" fontSize="9" color="#80deea" marginBottom="10">Level 1 -- Novice</text>
+  <text name="btn-play" fontSize="14" fontWeight="bold" color="#000000" backgroundColor="#00e5ff" padding="6" borderRadius="4" width="180" textAlign="center" marginBottom="4" cursor="pointer">PLAY</text>
+  <text name="btn-scores" fontSize="12" color="#00e5ff" backgroundColor="#001a2e" padding="5" borderRadius="4" width="180" textAlign="center" marginBottom="3" cursor="pointer">LEADERBOARD</text>
+  <text name="btn-achievements" fontSize="12" color="#00e5ff" backgroundColor="#001a2e" padding="5" borderRadius="4" width="180" textAlign="center" marginBottom="3" cursor="pointer">ACHIEVEMENTS</text>
+  <text name="btn-stats" fontSize="12" color="#00e5ff" backgroundColor="#001a2e" padding="5" borderRadius="4" width="180" textAlign="center" marginBottom="3" cursor="pointer">STATS</text>
+  <text name="btn-skins" fontSize="12" color="#ffa726" backgroundColor="#1a1200" padding="5" borderRadius="4" width="180" textAlign="center" marginBottom="3" cursor="pointer">PIECE THEMES</text>
+  <text name="btn-settings" fontSize="12" color="#00e5ff" backgroundColor="#001a2e" padding="5" borderRadius="4" width="180" textAlign="center" marginBottom="3" cursor="pointer">SETTINGS</text>
+  <text name="btn-help" fontSize="12" color="#00e5ff" backgroundColor="#001a2e" padding="5" borderRadius="4" width="180" textAlign="center" cursor="pointer">HELP</text>
+</panel>

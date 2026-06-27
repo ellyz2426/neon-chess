@@ -1,0 +1,28 @@
+<panel width="280" height="280" backgroundColor="#000a14" borderRadius="8" borderColor="#00e5ff" borderWidth="1" flexDirection="column" alignItems="center" padding="12">
+  <text fontSize="18" fontWeight="bold" color="#00e5ff" marginBottom="8">SETTINGS</text>
+  <text fontSize="10" color="#4dd0e1" marginBottom="4">Master Volume</text>
+  <panel flexDirection="row" alignItems="center" marginBottom="6">
+    <text name="btn-master-down" fontSize="14" color="#00e5ff" padding="4" cursor="pointer"> - </text>
+    <text name="val-master" fontSize="11" color="#80deea" width="40" textAlign="center">80%</text>
+    <text name="btn-master-up" fontSize="14" color="#00e5ff" padding="4" cursor="pointer"> + </text>
+  </panel>
+  <text fontSize="10" color="#4dd0e1" marginBottom="4">SFX Volume</text>
+  <panel flexDirection="row" alignItems="center" marginBottom="6">
+    <text name="btn-sfx-down" fontSize="14" color="#00e5ff" padding="4" cursor="pointer"> - </text>
+    <text name="val-sfx" fontSize="11" color="#80deea" width="40" textAlign="center">80%</text>
+    <text name="btn-sfx-up" fontSize="14" color="#00e5ff" padding="4" cursor="pointer"> + </text>
+  </panel>
+  <text fontSize="10" color="#4dd0e1" marginBottom="4">Music Volume</text>
+  <panel flexDirection="row" alignItems="center" marginBottom="6">
+    <text name="btn-music-down" fontSize="14" color="#00e5ff" padding="4" cursor="pointer"> - </text>
+    <text name="val-music" fontSize="11" color="#80deea" width="40" textAlign="center">80%</text>
+    <text name="btn-music-up" fontSize="14" color="#00e5ff" padding="4" cursor="pointer"> + </text>
+  </panel>
+  <text fontSize="10" color="#4dd0e1" marginBottom="4">Board Theme</text>
+  <panel flexDirection="row" alignItems="center" marginBottom="8">
+    <text name="btn-theme-prev" fontSize="14" color="#00e5ff" padding="4" cursor="pointer"> < </text>
+    <text name="val-theme" fontSize="11" color="#80deea" width="100" textAlign="center">Neon Holodeck</text>
+    <text name="btn-theme-next" fontSize="14" color="#00e5ff" padding="4" cursor="pointer"> > </text>
+  </panel>
+  <text name="btn-settings-back" fontSize="12" color="#888888" backgroundColor="#111111" padding="5" borderRadius="4" width="160" textAlign="center" cursor="pointer">BACK</text>
+</panel>
